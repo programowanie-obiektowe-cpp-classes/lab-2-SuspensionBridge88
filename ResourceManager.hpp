@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Resource.hpp"
-#include <iostream>
+//#include <iostream>
 
 class ResourceManager
 {
@@ -14,7 +14,7 @@ public:
     }
     ~ResourceManager()
     {
-        std::cout << : "Usunieto kopie zasobu";
+        //std::cout << : "Usunieto kopie zasobu";
     }
     double get()
     {
