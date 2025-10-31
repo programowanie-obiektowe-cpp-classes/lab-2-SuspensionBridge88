@@ -1,43 +1,52 @@
 #pragma once
 
 #include "Resource.hpp"
-//#include <iostream>
 
 class ResourceManager
 {
     // Twoja implementacja tutaj
 public:
-    ResourceManager();
+    ResourceManager()
     {
-        rsrc = NULL;
-        liczba = NULL;
+        rsrc = new Resource();
+        
     }
     ~ResourceManager()
     {
-        //std::cout << : "Usunieto kopie zasobu";
+        delete rsrc;
     }
     double get()
-    {
-        liczba = rsrc.get();
-        return liczba;
+    { 
+        return rsrc->get();
+        
     }
-    ResourceManager(const ResourceManager& kopia)
-    {
-        liczba = kopia.liczba;
-        rsrc = kopia.rsrc;
-    }
+    ResourceManager(const ResourceManager& kopia) : rsrc(new Resource(*kopia.rsrc))
+    {}
     ResourceManager operator=(const ResourceManager& wartosc)
     {
-        liczba = wartosc.liczba;
-        rsrc = wartosc.rsrc;
+        if (this != &wartosc)
+        {
+            Resource* nowy = new Resource(*wartosc.rsrc);
+            delete rsrc;
+            rsrc = nowy;
+        }
+        return *this;       
     }
-    ResourceManager(ResourceManager&& zmiana) noexcept: liczba{zmiana.liczba}, rsrc{zmiana.rsrc}
+    ResourceManager(ResourceManager&& zmiana) noexcept: rsrc{zmiana.rsrc}
     {
-        zmiana.liczba = NULL;
-        zmiana.rsrc = NULL;
+        
+        zmiana.rsrc = nullptr;
+    }
+    ResourceManager& operator=(ResourceManager&& inny) noexcept
+    {
+        if (this != &inny) {
+            delete rsrc;
+            rsrc = inny.rsrc;
+            inny.rsrc = nullptr;
+        }
+        return *this;
     }
         
 private:
-    double liczba;
-    Resource rsrc;
+    Resource* rsrc;
 };
